@@ -1,0 +1,115 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GardenManagement"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Charting="using:WinRTXamlToolkit.Controls.DataVisualization.Charting"
+    xmlns:Controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    x:Class="GardenManagement.PlantDetailsPage"
+    mc:Ignorable="d" Loaded="Page_Loaded" x:Name="page_PlantDetails">
+
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <CommandBar x:Name="cbar_Top" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  >
+            <CommandBar.Content>
+                <TextBlock Text="Plant details" Height="{Binding ElementName=cbar_Top, Path=ActualHeight}" Margin="3,0" FontSize="30" ></TextBlock>
+            </CommandBar.Content>
+            <AppBarButton x:Name="AppBarHome" Icon="Home" Label="Home" Click="AppBarHome_Click" />
+            <AppBarButton x:Name="AppBarGardenSettings" Icon="Globe" Label="Garden Settings" Click="AppBarGardenSettings_Click" />
+            <AppBarButton x:Name="AppBarGeneralSettings" Icon="Setting" Label="General Settings"  Click="AppBarGeneralSettings_Click"/>
+        </CommandBar>
+
+        <TextBlock x:Name="tbl_PlantName" Text="{Binding PlantName}" RelativePanel.Below="cbar_Top" RelativePanel.AlignHorizontalCenterWithPanel="True" FontStyle="Italic" FontSize="30" />
+        <Grid x:Name="grid_Content" RelativePanel.Below="tbl_PlantName" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0">
+                <RelativePanel x:Name="rpan_PlantGeneralInfo" Grid.Column="0">
+
+                    <RelativePanel x:Name="rpan_PlantLocation" HorizontalAlignment="Stretch" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" BorderBrush="Black" BorderThickness="2" Margin="3">
+
+                        <TextBlock x:Name="tbl_Position" Text="Position" Margin="3,0,3,0"/>
+                        <ComboBox x:Name="cbox_SelectedGarden" RelativePanel.Below="tbl_Position" HorizontalAlignment="Stretch" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" IsEnabled="False" DataContext="{Binding RelevantGarden}" SelectedIndex="0" Margin="3" Header="Garden:">
+                            <!--<ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding GardenName}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>-->
+                            <ComboBoxItem>
+                                <TextBlock Text="{Binding GardenName}"></TextBlock>
+                            </ComboBoxItem>
+                        </ComboBox>
+                        <TextBox x:Name="tbx_Position_Row" Header="Row" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="cbox_SelectedGarden" Text="{Binding LocationRow}" IsEnabled="False" Margin="3,0,0,3" />
+                        <!--<Controls:HeaderedTextBlock x:Name="tbx_Position_Row" Text="{Binding LocationRow}" Header="Row" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="tbl_Position" HorizontalContentAlignment="Center" Margin="5,0,0,0" ></Controls:HeaderedTextBlock>-->
+                        <TextBox x:Name="tbx_Position_Column" Header="Column" RelativePanel.Below="cbox_SelectedGarden"  RelativePanel.AlignRightWithPanel="True" Text="{Binding LocationColumn}" IsEnabled="False" Margin="0,0,3,3"/>
+                    </RelativePanel>
+                    <StackPanel RelativePanel.Below="rpan_PlantLocation" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Orientation="Vertical" Margin="3">
+                        <Grid RelativePanel.Below="rpan_PlantLocation" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="8*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Minimum, ElementName=slid_WateringThreshold}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Slider x:Name="slid_WateringThreshold" Header="Watering Threshold"  Minimum="0" Maximum="100" Value="{Binding WateringThreshold}" IsEnabled="False" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1" />
+                            <TextBlock Text="{Binding Maximum, ElementName=slid_WateringThreshold}" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                        </Grid>
+                        <TextBlock Text="{Binding ElementName=slid_WateringThreshold, Path=Value}" HorizontalAlignment="Center"/>
+                        <Button x:Name="btn_ReadSensor" Content="Read soil moisture now" Margin="3" HorizontalAlignment="Stretch" Click="btn_ReadSensor_Click"></Button>
+                        <Button x:Name="btn_WaterNow" Content="Water the plant now" Margin="3" HorizontalAlignment="Stretch" Click="btn_WaterNow_Click" ></Button>
+                    </StackPanel>
+                </RelativePanel>
+            </ScrollViewer>
+            <Controls:GridSplitter Grid.Column="1" Background="Gray" HorizontalAlignment="Center" Width="11" ResizeBehavior="BasedOnAlignment" ResizeDirection="Auto" CursorBehavior="ChangeOnSplitterHover" GripperForeground="White" GripperCursor="Default" ></Controls:GridSplitter>
+            <ScrollViewer Grid.Column="2">
+                <RelativePanel x:Name="rpan_PlantStatistics" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+
+                    <TextBlock x:Name="tbl_Status" Text="Moisture Status:"/>
+                    <RelativePanel RelativePanel.Below="tbl_Status" x:Name="rpan_MoistureStatus">
+                        <Ellipse x:Name="el_MoistureOutside" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stroke="Black" Height="200" Width="200" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"  >
+                            <Ellipse.Fill>
+                                <LinearGradientBrush EndPoint="1,0" StartPoint="1,1" >
+                                    <GradientStop Color="Red"/>
+                                    <GradientStop Color="Red" Offset="{Binding Value, ConverterParameter=0.01, Converter={StaticResource MultiplyConverter}}"/>
+                                    <GradientStop Color="White" Offset="{Binding Value, ConverterParameter=0.01, Converter={StaticResource MultiplyConverter}}"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse Fill="White" x:Name="el_MoistureInside" DataContext="{Binding ElementName=el_MoistureOutside, Path=DataContext}" HorizontalAlignment="Stretch" Height="{Binding ActualHeight, ConverterParameter=0.7, Converter={StaticResource MultiplyConverter}, ElementName=el_MoistureOutside, Mode=OneWay}" Width="{Binding ActualWidth, ConverterParameter=0.7, Converter={StaticResource MultiplyConverter}, ElementName=el_MoistureOutside, Mode=OneWay}" Stroke="Black" VerticalAlignment="Center" RelativePanel.AlignHorizontalCenterWith="el_MoistureOutside"  RelativePanel.AlignVerticalCenterWith="el_MoistureOutside"/>
+                        <StackPanel x:Name="span_MoistureStatus" DataContext="{Binding ElementName=el_MoistureOutside, Path=DataContext}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
+                            <TextBlock x:Name="tbl_MoistureStatus" Text="{Binding Value, ConverterParameter=\{0\} %, Converter={StaticResource StringFormatConverter}}" TextAlignment="Center" />
+                            <TextBlock x:Name="tbl_MoistureStatusDate"  Text="{Binding Timestamp, ConverterParameter=\{0:dd.MM.yyyy\}, Converter={StaticResource StringFormatConverter}}" TextAlignment="Center"/>
+                            <TextBlock x:Name="tbl_MoistureStatusTime"  Text="{Binding Timestamp, ConverterParameter=\{0:t\}, Converter={StaticResource StringFormatConverter}}" TextAlignment="Center"/>
+                        </StackPanel>
+                    </RelativePanel>
+                    <TextBlock x:Name="tbl_StatisticTimeframe" Text="Filter the soil moisture statistics to:" RelativePanel.Below="rpan_MoistureStatus" Margin="3"></TextBlock>
+                    <ComboBox x:Name="cbox_StatisticTimeframe" RelativePanel.Below="rpan_MoistureStatus" RelativePanel.RightOf="tbl_StatisticTimeframe" SelectionChanged="cbox_StatisticTimeframe_SelectionChanged" SelectedValuePath="Content" SelectedIndex="0">
+                        <ComboBoxItem Content="Today"></ComboBoxItem>
+                        <ComboBoxItem Content="Last 7 days"></ComboBoxItem>
+                        <ComboBoxItem Content="Last 30 days"></ComboBoxItem>
+                    </ComboBox>
+                    <Charting:Chart x:Name="chart_SoilMoistureStatistic" RelativePanel.Below="cbox_StatisticTimeframe" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="400"  >
+                        <Charting:LineSeries Title="{x:Bind _selectedPlant.PlantName}" IndependentValuePath="Timestamp" DependentValuePath="Value" />
+                        <Charting:Chart.Axes>
+                            <Charting:LinearAxis Orientation="Y" x:Name="linax_Y_SoilMoistureStatistic" ShowGridLines="True" Title="Soil Moisture %" >
+                            </Charting:LinearAxis>
+                            <Charting:DateTimeAxis Title="Time">
+
+                            </Charting:DateTimeAxis>
+                        </Charting:Chart.Axes>
+
+                    </Charting:Chart>
+                </RelativePanel>
+            </ScrollViewer>
+        </Grid>
+    </RelativePanel>
+</Page>

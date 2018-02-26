@@ -1,0 +1,21 @@
+﻿<Application
+    x:Class="GardenManagement.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GardenManagement"
+    xmlns:DataVisualization="using:WinRTXamlToolkit.Controls.DataVisualization"
+    xmlns:Converters="using:WinRTXamlToolkit.Converters"
+    xmlns:Helpers="using:GardenManagement.Helpers"
+    RequestedTheme="Light">
+    <Application.Resources>
+        <ResourceDictionary>
+            <DataVisualization:StringFormatConverter x:Key="StringFormatConverter"/>
+            <Converters:MultiplyConverter x:Key="MultiplyConverter"/>
+            <Helpers:SelectedItemToBoolConverter x:Key="SelectedItemToBoolConverter" />
+        </ResourceDictionary>
+
+    </Application.Resources>
+
+    
+    
+</Application>

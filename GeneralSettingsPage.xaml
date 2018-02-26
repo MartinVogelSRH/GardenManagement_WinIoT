@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="GardenManagement.GeneralSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GardenManagement"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <CommandBar x:Name="cbar_Top" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  >
+            <CommandBar.Content>
+                <TextBlock Text="General settings" Height="{Binding ElementName=cbar_Top, Path=ActualHeight}"  Margin="3" FontSize="30" ></TextBlock>
+            </CommandBar.Content>
+            <AppBarButton x:Name="AppBarHome" Icon="Home" Label="Home" Click="AppBarHome_Click" />
+            <AppBarButton x:Name="AppBarGardenSettings" Icon="Globe" Label="Garden Settings" Click="AppBarGardenSettings_Click" />
+            <AppBarButton x:Name="AppBarGeneralSettings" Icon="Setting" Label="General Settings"  Click="AppBarGeneralSettings_Click"/>
+        </CommandBar>
+
+        <Pivot x:Name="piv_Settings" RelativePanel.Below="cbar_Top" Loaded="piv_Settings_Loaded" >
+
+            <PivotItem Header="Test Sensor">
+                <StackPanel x:Name="span_SensorTest">
+                    <ComboBox x:Name="cbox_SensorToTest" HorizontalAlignment="Stretch" Header="Please select a sensor you want to test" Margin="0,3,0,3">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding SensorName}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Text="Result:"></TextBlock>
+                    <TextBox x:Name="tbx_Result"></TextBox>
+                    <Button x:Name="btn_TestSensor" Click="btn_TestSensor_Click">Test Sensor</Button>
+                </StackPanel>
+            </PivotItem>
+            <PivotItem Header="Technical (Testing purposes)">
+                <StackPanel x:Name="span_Data">
+                    <Button x:Name="btn_AddData" Content="Add Sample Data" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top"  Click="btn_AddData_Click" />
+                    <Button x:Name="btn_DropData" Content="Drop Data" Height="32" VerticalAlignment="Top" Click="btn_DropData_Click"   />
+                </StackPanel>
+            </PivotItem>
+            <PivotItem Header="Email (Coming soon..)" IsEnabled="False">
+                <RelativePanel>
+                    <Grid x:Name="grid_NotificationSettings" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"></ColumnDefinition>
+                            <ColumnDefinition Width="5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <RelativePanel Grid.Column="0">
+                            <TextBlock x:Name="tbl_Email_Sender" Text="Sender Settings"></TextBlock>
+                            <TextBox x:Name="tbx_Email_Server" Header="Server:" RelativePanel.Below="tbl_Email_Sender" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="3"></TextBox>
+                            <TextBox x:Name="tbx_Email_Port" Header="Port:" RelativePanel.Below="tbx_Email_Server" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="3"></TextBox>
+                            <TextBox x:Name="tbx_Email_User" Header="User:" RelativePanel.Below="tbx_Email_Port" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="3"></TextBox>
+                            <TextBox x:Name="tbx_Email_Password" Header="Password:" RelativePanel.Below="tbx_Email_User" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="3"></TextBox>
+                            <CheckBox x:Name="cbx_Email_SSL" Content="Use SSL?" RelativePanel.Below="tbx_Email_Password" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="3"></CheckBox>
+                        </RelativePanel>
+                        <RelativePanel Grid.Column="1">
+                            <TextBlock x:Name="tbl_Email_Receiver" Text="Receiver Settings"></TextBlock>
+                            <TextBox x:Name="tbx_Email_Receiver_Mail" Header="Receiver E-Mail Adress:" RelativePanel.Below="tbl_Email_Receiver" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="3"></TextBox>
+                            <CheckBox x:Name="cbx_Email_Daily" Content="Daily Statistics" RelativePanel.Below="tbx_Email_Receiver_Mail" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="3"></CheckBox>
+                            <CheckBox x:Name="cbx_Email_Warning" Content="Warnings" RelativePanel.Below="cbx_Email_Daily" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="3"></CheckBox>
+                        </RelativePanel>
+                    </Grid>
+                    <RelativePanel RelativePanel.Below="grid_NotificationSettings" RelativePanel.AlignRightWithPanel="True">
+                        <Button x:Name="btn_Email_Save" RelativePanel.LeftOf="btn_Email_Cancel" Margin="3">
+                            <SymbolIcon Symbol="Save"></SymbolIcon>
+                        </Button>
+                        <Button x:Name="btn_Email_Cancel" RelativePanel.AlignRightWithPanel="True" Margin="0,3">
+                            <SymbolIcon Symbol="Cancel"></SymbolIcon>
+                        </Button>
+                    </RelativePanel>
+                </RelativePanel>
+            </PivotItem>
+        </Pivot>
+    </RelativePanel>
+</Page>
